@@ -156,6 +156,9 @@ def returnPossibleClasses(majorList): #sched, , coursesTaken):
 
 
 returnPossibleClasses(csList)
+#so now theres two fields, classestaken and coursesthisyear. classes taken are for classes taken in the years before, while coursesthis year are courses you already know youre taking this year
+#so now it does checking agianst both list, does unit limit check against the coursesthisyear, and does not suggest if that class would make the unit limit go over
+#i hardcoded the unitlimit to 54 for cs major
 
 #def getMajorCores(major):
 
