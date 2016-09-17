@@ -2,7 +2,6 @@ from flask import Flask, render_template, request
 import Schedulr as helper
 app = Flask(__name__)
 
-
 @app.route('/')
 def index():
     return 'Welcome to Sche-toolR!'
