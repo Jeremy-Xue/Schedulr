@@ -6,18 +6,20 @@ with open('test.json','r') as f:
     courseDict = fullDict["courses"].keys()
 
 csList = ["15-451", "15-112", "15-122", "15-150", "15-210", "15-213", "15-251", "15-451", "21-120", "21-122",
-          "21-241", "76-270", "15-453", "21-301", "21-484", "02-510", "05-391", "10-401"] #Not full list
+          "21-241", "76-270", "15-453", "21-301", "21-484", "02-510", "05-391", "10-401"]
 
-classesTaken = [] #Make it so this is user input
+classesTaken = []
 
 coursesThisYear=[]
 
-def fillClassesTaken(courseName):
-    classesTaken.append(courseName)
+def fillClassesTaken(courseList):
+    for course in courseList:
+        classesTaken.append(course)
     return classesTaken
 
-def fillCoursesThisYear(courseName):
-    coursesThisYear.append(courseName)
+def fillCoursesThisYear(courseList):
+    for course in courseList:
+        coursesThisYear.append(courseList)
     return coursesThisYear
 
 sched = {}
@@ -118,12 +120,12 @@ def checkAvailability(days, begin, duration):
 
 possibleClasses = []
 
-def returnPossibleClasses(majorList): #sched, , coursesTaken):
+def returnPossibleClasses():
     fillClassesTaken()
-    for course in range(len(majorList)):
-        if majorList[course] in classesTaken or majorList[course] in coursesThisYear:
+    for course in range(len(csList)):
+        if csList[course] in classesTaken or csList[course] in coursesThisYear:
             continue
-        courseNum = majorList[course]
+        courseNum = csList[course]
         begin = (fullDict["courses"][str(courseNum)]["lectures"][0]["times"][0]["begin"])
         days = (fullDict["courses"][str(courseNum)]["lectures"][0]["times"][0]["days"])
         courseDuration = getCourseDuration(courseNum)
@@ -131,13 +133,12 @@ def returnPossibleClasses(majorList): #sched, , coursesTaken):
         for course in coursesThisYear:
             unitsum+=(fullDict["courses"][course]["units"])
         maxunits=54
-        #print (unitsum)
         if(checkAvailability(days, begin, courseDuration)):
-            #for check in (fullDict["courses"][str (courseNum)]["prereqs"]):
-            for check in coursesThisYear:
-                if (not fullDict["courses"][str(courseNum)]["prereqs"]==None and check in fullDict["courses"][str (courseNum)]["prereqs"]):
-                    if (unitsum+fullDict["courses"][str(courseNum)]["units"]<maxunits):
-                        possibleClasses.append(str(courseNum))
+            if (unitsum + fullDict["courses"][str(courseNum)]["units"] < maxunits):
+                if (fullDict["courses"][str(courseNum)]["prereqs"]==None):
+                    possibleClasses.append(str(courseNum))
+                elif (course in fullDict["courses"][str (courseNum)]["prereqs"]):
+                    possibleClasses.append(str(courseNum))
     description=[]
     for cls in possibleClasses:
         description.append(fullDict["courses"][cls]["desc"])
@@ -148,6 +149,7 @@ def returnPossibleClasses(majorList): #sched, , coursesTaken):
     print (courseTitle)
     print (description)
     return possibleClasses
+
 
 
 returnPossibleClasses(csList)
