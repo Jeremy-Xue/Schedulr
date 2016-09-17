@@ -8,10 +8,17 @@ with open('test.json','r') as f:
 csList = ["15-451", "15-112", "15-122", "15-150", "15-210", "15-213", "15-251", "15-451", "21-120", "21-122",
           "21-241"] #Not full list
 
-classesTaken = ["15-112", "15-122"] #Make it so this is user input
+classesTaken = ["15-122"] #Make it so this is user input
 
-#def fillClassesTaken(classList):
-    #classList += str
+def fillClassesTaken():
+    while True:
+        prompt=input("Would you like to fill a new class?")
+        if (prompt.lower()=="yes" or prompt.lower()=="y"):
+            classes=input("What is the name of the class")
+            classesTaken.append(classes)
+        else:
+            break
+        print (classesTaken)
 
 sched = {}
 
@@ -51,11 +58,11 @@ def getCourseDuration(courseNum):
     endInt = int(end[:2])
     if (begin[3] == "3"):
         beginInt += .5
-    if (begin[:2] != "12" and begin[5] == "P"):
+    elif (begin[:2] != "12" and begin[5] == "P"):
         beginInt += 12
-    if (end[:2] != "12" and end[5] == "P"):
+    elif (end[:2] != "12" and end[5] == "P"):
         endInt += 12
-    if (end[3] == "5"):
+    elif (end[3] == "5"):
         endInt += 1
     elif (end[3] == "2"):
         endInt += .5
@@ -112,13 +119,19 @@ def checkAvailability(days, begin, duration):
 possibleClasses = []
 
 def returnPossibleClasses(majorList): #sched, , coursesTaken):
+    fillClassesTaken()
     for course in range(len(majorList)):
+        if majorList[course] in classesTaken:
+            continue
         courseNum = majorList[course]
         begin = (fullDict["courses"][str(courseNum)]["lectures"][0]["times"][0]["begin"])
         days = (fullDict["courses"][str(courseNum)]["lectures"][0]["times"][0]["days"])
         courseDuration = getCourseDuration(courseNum)
         if(checkAvailability(days, begin, courseDuration)):
-            possibleClasses.append(str(courseNum))
+            #for check in (fullDict["courses"][str (courseNum)]["prereqs"]):
+            for check in classesTaken:
+                if (not fullDict["courses"][str(courseNum)]["prereqs"]==None and check in fullDict["courses"][str (courseNum)]["prereqs"]):
+                    possibleClasses.append(str(courseNum))
     print(possibleClasses)
     return possibleClasses
 
