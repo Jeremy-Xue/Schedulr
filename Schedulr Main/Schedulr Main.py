@@ -11,21 +11,16 @@ csList = ["15-451", "15-112", "15-122", "15-150", "15-210", "15-213", "15-251", 
 classesTaken = [] #Make it so this is user input
 
 coursesThisYear=[]
-def fillClassesTaken():
-    while True:
-        prompt=input("Would you like to fill a class you've already taken (Yes/No)?")
-        if (prompt.lower()=="yes" or prompt.lower()=="y"):
-            classes=input("What is the name of the class")
-            classesTaken.append(classes)
-        else:
-            break
-    while True:
-        prompt = input("Would you like to fill a class you're taking this year already?(Yes/No)")
-        if (prompt.lower() == "yes" or prompt.lower() == "y"):
-            classes2 = input("What is the name of the class")
-            coursesThisYear.append(classes2)
-        else:
-            break
+
+def fillClassesTaken(className):
+    classesTaken.append(className)
+    return classesTaken
+
+
+def fillCoursesThisYear(className):
+    coursesThisYear.append(className)
+    return coursesThisYear
+
 sched = {}
 
 def initSchedule():
@@ -124,7 +119,7 @@ def checkAvailability(days, begin, duration):
 
 possibleClasses = []
 
-def returnPossibleClasses(majorList): #sched, , coursesTaken):
+def returnPossibleClasses(majorList):
     fillClassesTaken()
     for course in range(len(majorList)):
         if majorList[course] in classesTaken or majorList[course] in coursesThisYear:
@@ -137,13 +132,15 @@ def returnPossibleClasses(majorList): #sched, , coursesTaken):
         for course in coursesThisYear:
             unitsum+=(fullDict["courses"][course]["units"])
         maxunits=54
-        #print (unitsum)
         if(checkAvailability(days, begin, courseDuration)):
-            #for check in (fullDict["courses"][str (courseNum)]["prereqs"]):
-            for check in coursesThisYear:
-                if (not fullDict["courses"][str(courseNum)]["prereqs"]==None and check in fullDict["courses"][str (courseNum)]["prereqs"]):
-                    if (unitsum+fullDict["courses"][str(courseNum)]["units"]<maxunits):
+            if(not str(course) in classesTaken):
+                if (unitsum + fullDict["courses"][str(courseNum)]["units"] < maxunits):
+                    if(fullDict["courses"][str(courseNum)]["prereqs"]==None):
                         possibleClasses.append(str(courseNum))
+                    elif(str(course) in fullDict["courses"][str(courseNum)]["prereqs"]):
+                        possibleClasses.append(str(courseNum))
+                #if (not fullDict["courses"][str(courseNum)]["prereqs"]==None and check in fullDict["courses"][str (courseNum)]["prereqs"]):
+
     description=[]
     for cls in possibleClasses:
         description.append(fullDict["courses"][cls]["desc"])
