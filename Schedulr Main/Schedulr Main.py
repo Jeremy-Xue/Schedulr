@@ -11,21 +11,15 @@ csList = ["15-451", "15-112", "15-122", "15-150", "15-210", "15-213", "15-251", 
 classesTaken = [] #Make it so this is user input
 
 coursesThisYear=[]
-def fillClassesTaken():
-    while True:
-        prompt=input("Would you like to fill a class you've already taken (Yes/No)?")
-        if (prompt.lower()=="yes" or prompt.lower()=="y"):
-            classes=input("What is the name of the class")
-            classesTaken.append(classes)
-        else:
-            break
-    while True:
-        prompt = input("Would you like to fill a class you're taking this year already?(Yes/No)")
-        if (prompt.lower() == "yes" or prompt.lower() == "y"):
-            classes2 = input("What is the name of the class")
-            coursesThisYear.append(classes2)
-        else:
-            break
+
+def fillClassesTaken(className):
+    classesTaken.append(className)
+    return classesTaken
+
+
+def fillCoursesThisYear(className):
+    coursesThisYear.append(className)
+    return coursesThisYear
 
 sched = {}
 
