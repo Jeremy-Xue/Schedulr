@@ -6,20 +6,21 @@ with open('test.json','r') as f:
     courseDict = fullDict["courses"].keys()
 
 csList = ["15-451", "15-112", "15-122", "15-150", "15-210", "15-213", "15-251", "15-451", "21-120", "21-122",
-          "21-241"] #Not full list
+          "21-241", "76-270", "15-453", "21-301", "21-484", "02-510", "05-391", "10-401"] #Not full list
 
-classesTaken = ["15-122"] #Make it so this is user input
+classesTaken = [] #Make it so this is user input
+
 coursesThisYear=[]
 def fillClassesTaken():
     while True:
-        prompt=input("Would you like to fill a class you've already taken (previously)?")
+        prompt=input("Would you like to fill a class you've already taken (Yes/No)?")
         if (prompt.lower()=="yes" or prompt.lower()=="y"):
             classes=input("What is the name of the class")
             classesTaken.append(classes)
         else:
             break
     while True:
-        prompt = input("Would you like to fill a class you're taking this year already?")
+        prompt = input("Would you like to fill a class you're taking this year already?(Yes/No)")
         if (prompt.lower() == "yes" or prompt.lower() == "y"):
             classes2 = input("What is the name of the class")
             coursesThisYear.append(classes2)
@@ -136,7 +137,7 @@ def returnPossibleClasses(majorList): #sched, , coursesTaken):
         for course in coursesThisYear:
             unitsum+=(fullDict["courses"][course]["units"])
         maxunits=54
-        print (unitsum)
+        #print (unitsum)
         if(checkAvailability(days, begin, courseDuration)):
             #for check in (fullDict["courses"][str (courseNum)]["prereqs"]):
             for check in coursesThisYear:
